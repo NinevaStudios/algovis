@@ -69,14 +69,6 @@ public class SortStackUsingTwoStacksProblem : MonoBehaviour
 		yield return waitFor;
 	}
 
-	IEnumerator DemoMoveFromOneToAnother()
-	{
-		while (!s1.IsEmpty)
-		{
-			yield return StackUtil.PopFromXPushToY(s1, s2);
-		}
-	}
-
 	IEnumerator Sort(VisualStackInt s)
 	{
 		var r = s2;
@@ -85,13 +77,13 @@ public class SortStackUsingTwoStacksProblem : MonoBehaviour
 		while (!s.IsEmpty)
 		{
 			var tmp = s.Pop();
-			yield return tmp.go.transform.DOMove(tmpLocation.transform.position, 1f).WaitForCompletion();
+			yield return tmp.MoveTo(tmpLocation);
 			while (!r.IsEmpty && r.Peek().val > tmp.val)
 			{
-				yield return StackUtil.PopFromXPushToY(r, s);
+				yield return r.PopAndPushTo(s);
 			}
 
-			yield return StackUtil.PushToStack(tmp, r);
+			yield return tmp.PushToStack(r);
 		}
 	}
 }
