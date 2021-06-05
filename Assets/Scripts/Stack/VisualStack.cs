@@ -8,8 +8,15 @@ using Object = UnityEngine.Object;
 namespace Nineva
 {
 	[Serializable]
-	public class VisualStack<T>
+	public class VisualStack<T> : MonoBehaviour
 	{
+		VisualStackItem _stackItemPrefab;
+
+		void Awake()
+		{
+			_stackItemPrefab = Resources.Load<VisualStackItem>("Prefabs/pref_StackItem");
+		}
+
 		[Serializable]
 		public class OnPeekEvent : UnityEvent<GameObject, T>
 		{
@@ -54,17 +61,18 @@ namespace Nineva
 
 		GameObject CreateGameObject(T item)
 		{
-			var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			var pos = _stack.Count == 0 ? Vector3.zero : GetNextItemPos();
+			var go = Instantiate(_stackItemPrefab, pos, Quaternion.identity);
 			go.name = "Stack item " + item;
+			go.Text = item.ToString();
 			// TODO make better object size + color
-			go.transform.position = _stack.Count == 0 ? Vector3.zero : GetNextItemPos();
-			return go;
+			return go.gameObject;
 		}
 
 		Vector3 GetNextItemPos()
 		{
-			var result = _stack.Peek().Item2.transform.position;
-			return new Vector3(result.x, result.y + 1, result.z);
+			var stackPos = gameObject.transform.position;
+			return new Vector3(stackPos.x, _stack.Count, stackPos.z);
 		}
 	}
 }
