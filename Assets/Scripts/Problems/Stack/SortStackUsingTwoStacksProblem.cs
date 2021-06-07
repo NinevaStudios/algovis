@@ -7,6 +7,8 @@ using UnityEngine.Assertions;
 
 public class SortStackUsingTwoStacksProblem : MonoBehaviour
 {
+	[SerializeField] [Range(0.1f, 2f)]float _speed = 0.5f;
+	
 	[SerializeField] GameObject tmpLocation;
 	[SerializeField] VisualStackInt s1;
 	[SerializeField] VisualStackInt s2;
@@ -21,7 +23,7 @@ public class SortStackUsingTwoStacksProblem : MonoBehaviour
 
 	public void OnRunButtonClick()
 	{
-		StartCoroutine(Sort(s1));
+		StartCoroutine(Sort());
 	}
 
 	IEnumerator Run(VisualStackInt stack)
@@ -69,21 +71,25 @@ public class SortStackUsingTwoStacksProblem : MonoBehaviour
 		yield return waitFor;
 	}
 
-	IEnumerator Sort(VisualStackInt s)
+	IEnumerator Sort()
 	{
-		var r = s2;
-		Assert.IsTrue(r.IsEmpty, "Second stack must be empty");
+		Assert.IsTrue(s2.IsEmpty, "Second stack must be empty");
 
-		while (!s.IsEmpty)
+		while (!s1.IsEmpty)
 		{
-			var tmp = s.Pop();
-			yield return tmp.MoveTo(tmpLocation);
-			while (!r.IsEmpty && r.Peek().val > tmp.val)
+			var tmp = s1.Pop();
+			yield return tmp.MoveTo(tmpLocation, _speed);
+			while (!s2.IsEmpty && s2.Peek().val > tmp.val)
 			{
-				yield return r.PopAndPushTo(s);
+				yield return s2.PopAndPushTo(s1, _speed);
 			}
 
-			yield return tmp.PushToStack(r);
+			yield return tmp.PushToStack(s2, _speed);
+		}
+
+		while (!s2.IsEmpty)
+		{
+			yield return s2.PopAndPushTo(s1, _speed);
 		}
 	}
 }
