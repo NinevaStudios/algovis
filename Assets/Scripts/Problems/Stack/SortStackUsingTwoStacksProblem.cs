@@ -1,7 +1,6 @@
 using System.Collections;
 using DefaultNamespace;
 using DefaultNamespace.Problems.Common;
-using DG.Tweening;
 using Nineva;
 using UnityEngine;
 using UnityEngine.Assertions;

@@ -504,7 +504,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 118036676}
         m_TargetAssemblyTypeName: SortStackUsingTwoStacksProblem, Assembly-CSharp
-        m_MethodName: OnRunButtonClick
+        m_MethodName: RunSimulation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
